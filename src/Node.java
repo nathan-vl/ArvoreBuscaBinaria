@@ -1,14 +1,14 @@
 public class Node {
-	Double value;
+	Double valor;
 	Node esquerda;
 	Node direita;
-	
-	public Node(Double value) {
-		this.value = value;
+
+	public Node(Double valor) {
+		this.valor = valor;
 	}
-	
-	public Node(Double value, Node esquerda, Node direita) {
-		this.value = value;
+
+	public Node(Double valor, Node esquerda, Node direita) {
+		this.valor = valor;
 		this.esquerda = esquerda;
 		this.direita = direita;
 	}
