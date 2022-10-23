@@ -10,7 +10,7 @@ public class ArvoreBuscaBinaria {
 		return isValido(raiz);
 	}
 
-	private Node buscar(Node node, Double valor) {
+	private Node buscar(Node node, int valor) {
 		if (node == null)
 			return null;
 
@@ -23,11 +23,11 @@ public class ArvoreBuscaBinaria {
 		return node;
 	}
 
-	public Node buscar(Double valor) {
+	public Node buscar(int valor) {
 		return buscar(raiz, valor);
 	}
 
-	private void inserir(Node node, Double valor) throws Exception {
+	private void inserir(Node node, int valor) throws Exception {
 		if (node == null)
 			node = new Node(valor);
 		else if (valor < node.valor)
@@ -38,11 +38,11 @@ public class ArvoreBuscaBinaria {
 			throw new Exception("Valor já existe");
 	}
 
-	public void inserir(Double valor) throws Exception {
+	public void inserir(int valor) throws Exception {
 		inserir(raiz, valor);
 	}
 
-	private void remover(Node node, Double valor) throws Exception {
+	private void remover(Node node, int valor) throws Exception {
 		if (node == null)
 			throw new Exception("valor não existe");
 
@@ -72,7 +72,7 @@ public class ArvoreBuscaBinaria {
 		node.valor = popFolhaMaisDireita(node);
 	}
 
-	public void remover(Double valor) throws Exception {
+	public void remover(int valor) throws Exception {
 		remover(raiz, valor);
 	}
 
