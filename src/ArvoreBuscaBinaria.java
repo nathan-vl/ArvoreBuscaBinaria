@@ -1,89 +1,237 @@
 public class ArvoreBuscaBinaria {
-	Node raiz;
+	public No raiz;
 
-	public boolean isValido(Node node) {
-		return (node.esquerda == null || node.valor > node.esquerda.valor && isValido(node.esquerda))
-				&& (node.direita == null || node.valor < node.direita.valor && isValido(node.direita));
+	public ArvoreBuscaBinaria(int raiz) {
+		this.raiz = new No(raiz);
 	}
 
-	public boolean isValido() {
-		return isValido(raiz);
-	}
-
-	private Node buscar(Node node, int valor) {
-		if (node == null)
+	/**
+	 * Função privada utilizada para fazer a busca do valor passado
+	 * 
+	 * @param no    nó da arvore onde o valor deverá ser buscado
+	 * @param valor valor a ser consultado
+	 * @return retorna null quando o nó é vazio; e
+	 *         retorna o nó quando encontra o valor procurado.
+	 */
+	private No buscar(No no, int valor) {
+		if (no == null)
 			return null;
 
-		if (valor < node.valor)
-			return buscar(node.esquerda, valor);
+		if (valor < no.valor)
+			return buscar(no.esquerda, valor);
 
-		if (valor > node.valor)
-			return buscar(node.direita, valor);
+		if (valor > no.valor)
+			return buscar(no.direita, valor);
 
-		return node;
+		return no;
 	}
 
-	public Node buscar(int valor) {
+	public No buscar(int valor) {
 		return buscar(raiz, valor);
 	}
 
-	private void inserir(Node node, int valor) throws Exception {
-		if (node == null)
-			node = new Node(valor);
-		else if (valor < node.valor)
-			inserir(node.esquerda, valor);
-		else if (valor > node.valor)
-			inserir(node.direita, valor);
-		else
-			throw new Exception("Valor já existe");
+	/**
+	 * Função privada utilizada para inserir o valor passado no nó
+	 * 
+	 * @param no    nó da arvore onde o valor deverá ser inserido
+	 * @param valor valor a ser inserido
+	 * @return retorna true quando o valor é inserido; e
+	 *         retorna false quando nenhuma das condições é atendida.
+	 *
+	 */
+	private boolean inserir(No no, int valor) {
+		if (valor < no.valor) {
+			no.tamanhoArvoreEsquerda += 1;
+			if (no.esquerda == null) {
+				no.esquerda = new No(valor);
+				return true;
+			}
+
+			return inserir(no.esquerda, valor);
+		}
+
+		if (valor > no.valor) {
+			no.tamanhoArvoreDireita += 1;
+			if (no.direita == null) {
+				no.direita = new No(valor);
+				return true;
+			}
+
+			return inserir(no.direita, valor);
+		}
+
+		return false;
 	}
 
-	public void inserir(int valor) throws Exception {
-		inserir(raiz, valor);
+	public boolean inserir(int valor) {
+		return inserir(raiz, valor);
 	}
 
-	private void remover(Node node, int valor) throws Exception {
-		if (node == null)
-			throw new Exception("valor não existe");
+	/**
+	 * Função privada utilizada para remover o valor passado do nó
+	 * 
+	 * @param no    nó da arvore onde o valor deverá ser removido
+	 * @param valor valor a ser removido
+	 * @return retorna true quando a remoção ocorre com sucesso; e
+	 *         retorna false quando o nó é vazio, ou seja, null.
+	 *
+	 */
+	private boolean remover(No no, int valor) {
+		if (no == null)
+			return false;
 
-		if (valor > node.valor) {
-			remover(node.direita, valor);
-			return;
-		}
-		if (valor < node.valor) {
-			remover(node.esquerda, valor);
-			return;
-		}
+		if (valor > no.valor)
+			return remover(no.direita, valor);
 
-		boolean isFolha = node.esquerda == null && node.direita == null;
-		if (isFolha) {
-			node = null;
-			return;
-		}
+		if (valor < no.valor)
+			return remover(no.esquerda, valor);
 
-		if (node.esquerda == null) {
-			node = node.direita;
-			return;
-		} else if (node.direita == null) {
-			node = node.esquerda;
-			return;
+		if (no.esquerda == null && no.direita == null) {
+			no = null;
+			return true;
 		}
 
-		node.valor = popFolhaMaisDireita(node);
+		if (no.esquerda == null) {
+			no = no.direita;
+			return true;
+		}
+
+		if (no.direita == null) {
+			no = no.esquerda;
+			return true;
+		}
+
+		no.valor = popFolhaMaisDireita(no);
+		return true;
 	}
 
-	public void remover(int valor) throws Exception {
-		remover(raiz, valor);
+	public boolean remover(int valor) {
+		return remover(raiz, valor);
 	}
 
-	private Double popFolhaMaisDireita(Node node) {
-		if (node.direita != null) {
-			return popFolhaMaisDireita(node.direita);
+	private int popFolhaMaisDireita(No no) {
+		if (no.direita != null) {
+			return popFolhaMaisDireita(no.direita);
 		}
 
-		Double result = node.valor;
-		node = node.esquerda;
+		int result = no.valor;
+		no = no.esquerda;
 
 		return result;
+	}
+
+	private int enesimoElemento(No no, int n) {
+		if (n == no.tamanhoArvoreEsquerda + 1)
+			return no.valor;
+
+		if (n < no.tamanhoArvoreEsquerda + 1)
+			return enesimoElemento(no.esquerda, n);
+
+		return enesimoElemento(no.direita, n - no.tamanhoArvoreEsquerda - 1);
+	}
+
+	public int enesimoElemento(int n) {
+		return enesimoElemento(raiz, n);
+	}
+
+	private int posicao(No no, int n, int x) {
+		if (no != null && x == no.valor)
+			return no.tamanhoArvoreEsquerda + 1;
+
+		if (no.esquerda != null && x < no.valor)
+			return posicao(no.esquerda, n + 1, x);
+
+		if (no.direita != null && x > no.valor)
+			return posicao(no.direita, n + 1, x);
+
+		return -1;
+	}
+
+	private int posicao(int x) {
+		return posicao(raiz, 1, x);
+	}
+
+	public int mediana() {
+		int tamanhoArvore = raiz.tamanhoArvoreEsquerda + raiz.tamanhoArvoreDireita + 1;
+
+		if (tamanhoArvore % 2 == 1)
+			return enesimoElemento((tamanhoArvore + 1) / 2);
+
+		return enesimoElemento(tamanhoArvore / 2);
+	}
+
+	public boolean ehCompleta(No no) {
+		if (no.esquerda != null) {
+			return false;
+		}
+
+		if (no.direita != null) {
+
+		}
+		return false;
+	}
+
+	public boolean ehCompleta() {
+		return ehCompleta();
+	}
+
+	private String pre_ordem(No no) {
+		String retorno = "" + no.valor;
+		if (no.esquerda != null) {
+			retorno += " " + pre_ordem(no.esquerda);
+		}
+		if (no.direita != null) {
+			retorno += " " + pre_ordem(no.direita);
+		}
+		return retorno;
+	}
+
+	public String pre_ordem() {
+		return pre_ordem(raiz);
+	}
+
+	public void imprimeArvore(int s) {
+		if (s == 1 || s == 2) {
+			if (s == 1) {
+				System.out.println(formato1(raiz));
+			} else if (s == 2) {
+				System.out.println(formato2(raiz));
+			}
+		}
+	}
+
+	public String formato1(No no) {
+		String retorno = "(" + no.valor;
+		if (no.esquerda != null) {
+			retorno += " " + formato1(no.esquerda);
+		}
+		if (no.direita != null) {
+			retorno += " " + formato1(no.direita);
+		}
+		return retorno + ")";
+	}
+
+	public String formato2(No no) {
+		String retorno = "(" + no.valor;
+		if (no.esquerda != null) {
+			retorno += " " + formato2(no.esquerda);
+		}
+		if (no.direita != null) {
+			retorno += " " + formato2(no.direita);
+		}
+		return retorno + ")";
+	}
+
+	public static void main(String[] args) {
+		ArvoreBuscaBinaria arvore = new ArvoreBuscaBinaria(5);
+		arvore.inserir(3);
+		arvore.inserir(8);
+		arvore.inserir(6);
+		arvore.inserir(9);
+
+		System.out.println(arvore.posicao(3));
+		System.out.println(arvore.posicao(8));
+		System.out.println(arvore.posicao(6));
+		System.out.println(arvore.posicao(9));
 	}
 }
