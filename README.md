@@ -1,5 +1,4 @@
-# Arvore de Busca Binária
-<hr>
+<h1 style="border-bottom: none">Arvore de Busca Binária</h1>
 
 <p><strong>Professor:</strong> Sidemar Fideles Cezario</p>
 
@@ -10,5 +9,3 @@
     <li>Guilherme Euller Dantas Silva</li>
     <li>Nathãn Vitor de Lima</li>
 </ul>
-
-<hr>
