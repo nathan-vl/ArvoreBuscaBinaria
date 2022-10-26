@@ -139,21 +139,22 @@ public class ArvoreBuscaBinaria {
 		return enesimoElemento(raiz, n);
 	}
 
-	private int posicao(No no, int n, int x) {
-		if (no != null && x == no.valor)
-			return no.tamanhoArvoreEsquerda + 1;
+	private int posicao(No no, int x) {
+		if (no != null) {
+			if ( x == no.valor)
+				return no.tamanhoArvoreEsquerda + 1;
 
-		if (no.esquerda != null && x < no.valor)
-			return posicao(no.esquerda, n + 1, x);
+			if (no.esquerda != null && x < no.valor)
+				return posicao(no.esquerda, x);
 
-		if (no.direita != null && x > no.valor)
-			return posicao(no.direita, n + 1, x);
-
+			if (no.direita != null && x > no.valor)
+				return posicao(no.direita, x) + (no.tamanhoArvoreEsquerda + 1);
+		}
 		return -1;
 	}
 
 	private int posicao(int x) {
-		return posicao(raiz, 1, x);
+		return posicao(raiz, x);
 	}
 
 	/*
@@ -274,14 +275,17 @@ public class ArvoreBuscaBinaria {
 	}
 
 	public static void main(String[] args) {
+
+
 		ArvoreBuscaBinaria arvore = new ArvoreBuscaBinaria(5);
 		arvore.inserir(3);
-		arvore.inserir(2);
-		arvore.inserir(1);
 		arvore.inserir(8);
 		arvore.inserir(6);
 		arvore.inserir(9);
-		
-		arvore.imprimeArvore(1);
+
+//		arvore.imprimeArvore(1);
+
+		// 3, 5, 6, 8, 9
+		System.out.println(arvore.posicao(9));
 	}
 }
