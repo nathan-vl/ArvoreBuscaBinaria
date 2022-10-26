@@ -169,14 +169,30 @@ public class ArvoreBuscaBinaria {
 	}
 
 	public boolean ehCompleta(No no) {
+		int max = maxNivel(raiz);
+		
+		if(no.esquerda == null || no.direita == null) {
+			int nivel = getNivel(no, raiz);
+			if(max == nivel || max - 1 == nivel) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
 		if (no.esquerda != null) {
-			return false;
+			return ehCompleta(no.esquerda);
 		}
 
 		if (no.direita != null) {
-
+			return ehCompleta(no.direita);
 		}
-		return false;
+		
+		return true;
+	}
+	
+	public boolean ehCompleta() {
+		return ehCompleta(raiz);
 	}
 
 	private int getNivel(No no, No raiz) {
@@ -190,20 +206,20 @@ public class ArvoreBuscaBinaria {
 	}
 
 	public int maxNivel(No no) {
-		int max = getNivel(no, raiz);
+		int max = 1;
 		if (no.esquerda != null) {
-			if (max < getNivel(no.esquerda, raiz))
-				max = maxNivel(no.esquerda);
+			int maxAux = maxNivel(no.esquerda);
+			if(maxAux > max)
+				max = maxAux;
 		}
 		if (no.direita != null) {
-			if (max < getNivel(no.direita, raiz))
-				max = maxNivel(no.direita);
+			int maxAux = maxNivel(no.direita);
+			if(maxAux > max)
+				max = maxAux;
 		}
+		if(no.esquerda == null && no.direita == null)
+			max = getNivel(no, raiz);
 		return max;
-	}
-
-	public boolean ehCompleta() {
-		return ehCompleta();
 	}
 
 	private String pre_ordem(No no) {
@@ -259,7 +275,11 @@ public class ArvoreBuscaBinaria {
 		arvore.inserir(8);
 		arvore.inserir(6);
 		arvore.inserir(9);
-
+		
+		arvore.imprimeArvore(1);
+		
 		System.out.println(arvore.maxNivel(arvore.raiz));
+
+		System.out.println(arvore.ehCompleta());
 	}
 }
