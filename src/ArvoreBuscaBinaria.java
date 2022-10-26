@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class ArvoreBuscaBinaria {
 	public No raiz;
 
@@ -120,6 +122,9 @@ public class ArvoreBuscaBinaria {
 		return result;
 	}
 
+	/*
+	 * log(n)
+	 */
 	private int enesimoElemento(No no, int n) {
 		if (n == no.tamanhoArvoreEsquerda + 1)
 			return no.valor;
@@ -151,6 +156,9 @@ public class ArvoreBuscaBinaria {
 		return posicao(raiz, 1, x);
 	}
 
+	/*
+	 * log(n)
+	 */
 	public int mediana() {
 		int tamanhoArvore = raiz.tamanhoArvoreEsquerda + raiz.tamanhoArvoreDireita + 1;
 
@@ -169,6 +177,29 @@ public class ArvoreBuscaBinaria {
 
 		}
 		return false;
+	}
+
+	private int getNivel(No no, No raiz) {
+		if (no.valor > raiz.valor) {
+			return 1 + getNivel(no, raiz.direita);
+		}
+		if (no.valor < raiz.valor) {
+			return 1 + getNivel(no, raiz.esquerda);
+		}
+		return 1;
+	}
+
+	public int maxNivel(No no) {
+		int max = getNivel(no, raiz);
+		if (no.esquerda != null) {
+			if (max < getNivel(no.esquerda, raiz))
+				max = maxNivel(no.esquerda);
+		}
+		if (no.direita != null) {
+			if (max < getNivel(no.direita, raiz))
+				max = maxNivel(no.direita);
+		}
+		return max;
 	}
 
 	public boolean ehCompleta() {
@@ -229,9 +260,6 @@ public class ArvoreBuscaBinaria {
 		arvore.inserir(6);
 		arvore.inserir(9);
 
-		System.out.println(arvore.posicao(3));
-		System.out.println(arvore.posicao(8));
-		System.out.println(arvore.posicao(6));
-		System.out.println(arvore.posicao(9));
+		System.out.println(arvore.maxNivel(arvore.raiz));
 	}
 }
