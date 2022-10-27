@@ -24,6 +24,8 @@ hs_err_pid*
 
 # others files
 .idea
+.classpath
 .metadata
 .project
 ArvoreBuscaBinaria.iml
+/bin/
