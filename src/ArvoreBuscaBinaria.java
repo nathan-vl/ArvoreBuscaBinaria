@@ -1,5 +1,3 @@
-import java.util.*;
-
 public class ArvoreBuscaBinaria {
 	public No raiz;
 
@@ -141,7 +139,7 @@ public class ArvoreBuscaBinaria {
 
 	private int posicao(No no, int x) {
 		if (no != null) {
-			if ( x == no.valor)
+			if (x == no.valor)
 				return no.tamanhoArvoreEsquerda + 1;
 
 			if (no.esquerda != null && x < no.valor)
@@ -153,7 +151,7 @@ public class ArvoreBuscaBinaria {
 		return -1;
 	}
 
-	private int posicao(int x) {
+	public int posicao(int x) {
 		return posicao(raiz, x);
 	}
 
@@ -177,21 +175,21 @@ public class ArvoreBuscaBinaria {
 
 	public double media(int x) {
 		No noRaiz = buscar(x);
-		if ( noRaiz == null )
+		if (noRaiz == null)
 			return 0;
 		return soma(noRaiz) / (noRaiz.tamanhoArvoreDireita + noRaiz.tamanhoArvoreEsquerda + 1);
 	}
 
 	public boolean ehCheia(No no) {
-		
-		if ( ( no.esquerda == null && no.direita != null ) ||
-			 ( no.esquerda != null && no.direita == null ) )
+
+		if ((no.esquerda == null && no.direita != null) ||
+				(no.esquerda != null && no.direita == null))
 			return false;
 
-		if ( no.esquerda != null && !ehCheia(no.esquerda) )
+		if (no.esquerda != null && !ehCheia(no.esquerda))
 			return false;
 
-		if ( no.direita != null && !ehCheia(no.direita))
+		if (no.direita != null && !ehCheia(no.direita))
 			return false;
 
 		return true;
@@ -203,22 +201,22 @@ public class ArvoreBuscaBinaria {
 	}
 
 	public boolean ehCompleta(No no) {
-		if(no.esquerda == null || no.direita == null) {
+		if (no.esquerda == null || no.direita == null) {
 			int max = maxNivel(raiz);
 			int nivel = getNivel(no, raiz);
-			if(!(max == nivel || max - 1 == nivel))
+			if (!(max == nivel || max - 1 == nivel))
 				return false;
 		}
-		
+
 		if (no.esquerda != null)
 			return ehCompleta(no.esquerda);
-			
+
 		if (no.direita != null)
 			return ehCompleta(no.direita);
-		
+
 		return true;
 	}
-	
+
 	public boolean ehCompleta() {
 		return ehCompleta(raiz);
 	}
@@ -227,9 +225,9 @@ public class ArvoreBuscaBinaria {
 		if (no.valor > raiz.valor)
 			return 1 + getNivel(no, raiz.direita);
 
-		if (no.valor < raiz.valor) 
+		if (no.valor < raiz.valor)
 			return 1 + getNivel(no, raiz.esquerda);
-		
+
 		return 1;
 	}
 
@@ -237,30 +235,31 @@ public class ArvoreBuscaBinaria {
 		int max = 1;
 		if (no.esquerda != null) {
 			int maxAux = maxNivel(no.esquerda);
-			if(maxAux > max)
+			if (maxAux > max)
 				max = maxAux;
 		}
-		
+
 		if (no.direita != null) {
 			int maxAux = maxNivel(no.direita);
-			if(maxAux > max)
+			if (maxAux > max)
 				max = maxAux;
 		}
-		
-		if(no.esquerda == null && no.direita == null)
+
+		if (no.esquerda == null && no.direita == null)
 			max = getNivel(no, raiz);
-		
+
 		return max;
 	}
 
 	private String pre_ordem(No no) {
 		String retorno = "" + no.valor;
-		if (no.esquerda != null) {
+
+		if (no.esquerda != null)
 			retorno += " " + pre_ordem(no.esquerda);
-		}
-		if (no.direita != null) {
+
+		if (no.direita != null)
 			retorno += " " + pre_ordem(no.direita);
-		}
+
 		return retorno;
 	}
 
@@ -270,50 +269,55 @@ public class ArvoreBuscaBinaria {
 
 	public void imprimeArvore(int s) {
 		if (s == 1 || s == 2) {
-			if (s == 1) {
+			if (s == 1)
 				formato1(raiz);
-			} else if (s == 2) {
+			else if (s == 2)
 				System.out.println(formato2(raiz));
-			}
 		}
 	}
 
 	public void formato1(No no) {
 		int nivel = getNivel(no, raiz);
-		for(int i=0; i< nivel - 1; i++) {
+		for (int i = 0; i < nivel - 1; i++)
 			System.out.print("\t");
-		};
+
 		System.out.print(no.valor);
-		for(int i=0; i<maxNivel(raiz)-nivel+ 1; i++) {
+		for (int i = 0; i < maxNivel(raiz) - nivel + 1; i++)
 			System.out.print("--------");
-		}
-		System.out.print("\n");
-		if(no.esquerda != null) {
+
+		System.out.println();
+		if (no.esquerda != null)
 			formato1(no.esquerda);
-		}
-		if(no.direita != null) {
+
+		if (no.direita != null)
 			formato1(no.direita);
-		}
 	}
 
 	public String formato2(No no) {
 		String retorno = "(" + no.valor;
-		if (no.esquerda != null) {
+		if (no.esquerda != null)
 			retorno += " " + formato2(no.esquerda);
-		}
-		if (no.direita != null) {
+
+		if (no.direita != null)
 			retorno += " " + formato2(no.direita);
-		}
+
 		return retorno + ")";
 	}
 
 	public static void main(String[] args) {
-		ArvoreBuscaBinaria arvore = new ArvoreBuscaBinaria(5);
-		arvore.inserir(3);
-		arvore.inserir(8);
-		arvore.inserir(6);
-		arvore.inserir(9);
+		ArvoreBuscaBinaria arvore = null;
+		try {
+			arvore = Leitura.lerValores(args[0]);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return;
+		}
 
-		System.out.println(arvore.ehCheia());
+		try {
+			Leitura.interpretarComandos(arvore, args[1]);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
+
 }
