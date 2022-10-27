@@ -169,6 +169,39 @@ public class ArvoreBuscaBinaria {
 		return enesimoElemento(tamanhoArvore / 2);
 	}
 
+	private double soma(No no) {
+		if (no == null)
+			return 0;
+		return no.valor + soma(no.esquerda) + soma(no.direita);
+	}
+
+	public double media(int x) {
+		No noRaiz = buscar(x);
+		if ( noRaiz == null )
+			return 0;
+		return soma(noRaiz) / (noRaiz.tamanhoArvoreDireita + noRaiz.tamanhoArvoreEsquerda + 1);
+	}
+
+	public boolean ehCheia(No no) {
+		
+		if ( ( no.esquerda == null && no.direita != null ) ||
+			 ( no.esquerda != null && no.direita == null ) )
+			return false;
+
+		if ( no.esquerda != null && !ehCheia(no.esquerda) )
+			return false;
+
+		if ( no.direita != null && !ehCheia(no.direita))
+			return false;
+
+		return true;
+	}
+
+	// eh cheia quando os seus nós possuem 0 ou 2 filhos
+	public boolean ehCheia() {
+		return ehCheia(raiz);
+	}
+
 	public boolean ehCompleta(No no) {
 		if(no.esquerda == null || no.direita == null) {
 			int max = maxNivel(raiz);
@@ -275,17 +308,12 @@ public class ArvoreBuscaBinaria {
 	}
 
 	public static void main(String[] args) {
-
-
 		ArvoreBuscaBinaria arvore = new ArvoreBuscaBinaria(5);
 		arvore.inserir(3);
 		arvore.inserir(8);
 		arvore.inserir(6);
 		arvore.inserir(9);
 
-//		arvore.imprimeArvore(1);
-
-		// 3, 5, 6, 8, 9
-		System.out.println(arvore.posicao(9));
+		System.out.println(arvore.ehCheia());
 	}
 }
