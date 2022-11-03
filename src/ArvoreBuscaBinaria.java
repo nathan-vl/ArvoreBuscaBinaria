@@ -123,7 +123,11 @@ public class ArvoreBuscaBinaria {
 	/*
 	 * log(n)
 	 */
-	private int enesimoElemento(No no, int n) {
+	private Integer enesimoElemento(No no, int n) {
+		if (no == null) {
+			return null;
+		}
+
 		if (n == no.tamanhoArvoreEsquerda + 1)
 			return no.valor;
 
@@ -133,7 +137,7 @@ public class ArvoreBuscaBinaria {
 		return enesimoElemento(no.direita, n - no.tamanhoArvoreEsquerda - 1);
 	}
 
-	public int enesimoElemento(int n) {
+	public Integer enesimoElemento(int n) {
 		return enesimoElemento(raiz, n);
 	}
 
@@ -182,8 +186,7 @@ public class ArvoreBuscaBinaria {
 
 	public boolean ehCheia(No no) {
 
-		if ((no.esquerda == null && no.direita != null) ||
-				(no.esquerda != null && no.direita == null))
+		if ((no.esquerda == null && no.direita != null) || (no.esquerda != null && no.direita == null))
 			return false;
 
 		if (no.esquerda != null && !ehCheia(no.esquerda))
