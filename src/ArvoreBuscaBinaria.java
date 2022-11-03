@@ -7,11 +7,11 @@ public class ArvoreBuscaBinaria {
 
 	/**
 	 * Função privada utilizada para fazer a busca do valor passado
-	 * 
+	 *
 	 * @param no    nó da arvore onde o valor deverá ser buscado
 	 * @param valor valor a ser consultado
 	 * @return retorna null quando o nó é vazio; e
-	 *         retorna o nó quando encontra o valor procurado.
+	 * retorna o nó quando encontra o valor procurado.
 	 */
 	private No buscar(No no, int valor) {
 		if (no == null)
@@ -32,12 +32,11 @@ public class ArvoreBuscaBinaria {
 
 	/**
 	 * Função privada utilizada para inserir o valor passado no nó
-	 * 
+	 *
 	 * @param no    nó da arvore onde o valor deverá ser inserido
 	 * @param valor valor a ser inserido
 	 * @return retorna true quando o valor é inserido; e
-	 *         retorna false quando nenhuma das condições é atendida.
-	 *
+	 * retorna false quando nenhuma das condições é atendida.
 	 */
 	private boolean inserir(No no, int valor) {
 		if (valor < no.valor) {
@@ -69,12 +68,11 @@ public class ArvoreBuscaBinaria {
 
 	/**
 	 * Função privada utilizada para remover o valor passado do nó
-	 * 
+	 *
 	 * @param no    nó da arvore onde o valor deverá ser removido
 	 * @param valor valor a ser removido
 	 * @return retorna true quando a remoção ocorre com sucesso; e
-	 *         retorna false quando o nó é vazio, ou seja, null.
-	 *
+	 * retorna false quando o nó é vazio, ou seja, null.
 	 */
 	private boolean remover(No no, int valor) {
 		if (no == null)
@@ -110,14 +108,15 @@ public class ArvoreBuscaBinaria {
 	}
 
 	private int popFolhaMaisDireita(No no) {
-		if (no.direita != null) {
-			return popFolhaMaisDireita(no.direita);
+		No noAtual = no;
+		while (noAtual.direita != null) {
+			noAtual = noAtual.direita;	
 		}
 
-		int result = no.valor;
-		no = no.esquerda;
+		int valor = noAtual.valor;
+		noAtual = null;
 
-		return result;
+		return valor;
 	}
 
 	/*
@@ -141,21 +140,20 @@ public class ArvoreBuscaBinaria {
 		return enesimoElemento(raiz, n);
 	}
 
-	private int posicao(No no, int x) {
-		if (no != null) {
-			if (x == no.valor)
-				return no.tamanhoArvoreEsquerda + 1;
+	private int posicao(No no, int x) throws Exception {
+		if (no == null)
+			throw new Exception("Valor não encontrado");
 
-			if (no.esquerda != null && x < no.valor)
-				return posicao(no.esquerda, x);
+		if (x < no.valor)
+			return posicao(no.esquerda, x);
 
-			if (no.direita != null && x > no.valor)
-				return posicao(no.direita, x) + (no.tamanhoArvoreEsquerda + 1);
-		}
-		return -1;
+		if (x > no.valor)
+			return posicao(no.direita, x) + no.tamanhoArvoreEsquerda + 1;
+
+		return no.tamanhoArvoreEsquerda + 1;
 	}
 
-	public int posicao(int x) {
+	public int posicao(int x) throws Exception {
 		return posicao(raiz, x);
 	}
 
@@ -185,6 +183,8 @@ public class ArvoreBuscaBinaria {
 	}
 
 	public boolean ehCheia(No no) {
+		if ((no.esquerda == null && no.direita == null) && maxNivel(raiz) != getNivel(no, raiz))
+			return false;
 
 		if ((no.esquerda == null && no.direita != null) || (no.esquerda != null && no.direita == null))
 			return false;

@@ -55,8 +55,12 @@ public class Leitura {
 				arvoreBuscaBinaria.imprimeArvore(
 						obterSegundoValorStringSeparadaEspaco(linha));
 			} else if (linha.startsWith("REMOVA")) {
-				arvoreBuscaBinaria.remover(
-						obterSegundoValorStringSeparadaEspaco(linha));
+				Integer n = obterSegundoValorStringSeparadaEspaco(linha);
+				if (arvoreBuscaBinaria.remover(n)) {
+					System.out.println(n + " removido");
+				} else {
+					System.out.println(n + " não está na árvore, não pode ser removido");
+				}
 			} else if (linha.startsWith("MEDIANA")) {
 				System.out.println(arvoreBuscaBinaria.mediana());
 			} else if (linha.startsWith("MEDIA")) {
@@ -66,7 +70,23 @@ public class Leitura {
 				System.out.println(booleanToString(arvoreBuscaBinaria.ehCheia()));
 			} else if (linha.startsWith("COMPLETA")) {
 				System.out.println(booleanToString(arvoreBuscaBinaria.ehCompleta()));
-			} else {
+			} else if (linha.startsWith("PREORDEM")) {
+				System.out.println(arvoreBuscaBinaria.pre_ordem());
+			} else if (linha.startsWith("INSIRA")) {
+				Integer n = obterSegundoValorStringSeparadaEspaco(linha);
+				if (arvoreBuscaBinaria.inserir(n)) {
+					System.out.println(n + " adicionado");
+				} else {
+					System.out.println(n + " já está na árvore, não pode ser inserido");
+				}
+			} else if (linha.startsWith("BUSCAR")) {
+				Integer n = obterSegundoValorStringSeparadaEspaco(linha);
+				if (arvoreBuscaBinaria.buscar(n) == null) {
+					System.out.println("Chave não encontrada");
+				} else {
+					System.out.println("Chave encontrada");
+				}
+			}else {
 				System.out.println("Comando desconhecido: " + linha.split(" ", 0)[0]);
 			}
 		}
