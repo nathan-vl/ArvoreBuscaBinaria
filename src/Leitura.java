@@ -86,7 +86,7 @@ public class Leitura {
 				} else {
 					System.out.println("Chave encontrada");
 				}
-			}else {
+			} else {
 				System.out.println("Comando desconhecido: " + linha.split(" ", 0)[0]);
 			}
 		}
