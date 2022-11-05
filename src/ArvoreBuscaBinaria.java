@@ -77,7 +77,7 @@ public class ArvoreBuscaBinaria {
 			if (no.esquerda.valor == valor)
 				return no;
 
-			return buscar(no.esquerda, valor);
+			return buscarNoPai(no.esquerda, valor);
 		}
 
 		if (valor > no.valor) {
@@ -87,7 +87,7 @@ public class ArvoreBuscaBinaria {
 			if (no.direita.valor == valor)
 				return no;
 
-			return buscar(no.direita, valor);
+			return buscarNoPai(no.direita, valor);
 		}
 
 		throw new Exception("O nó passado já possui o valor");
@@ -101,54 +101,70 @@ public class ArvoreBuscaBinaria {
 	 * @return retorna true quando a remoção ocorre com sucesso; e
 	 *         retorna false quando o nó é vazio, ou seja, null.
 	 */
-	private boolean remover(No no, int valor) {
-		if (no == null)
-			return false;
-
+	private Integer removerSemAtualizar(int valor) {
+		No pai = null;
 		try {
-			No noEncontrado = buscarNoPai(raiz, valor);
-
-			if (noEncontrado.esquerda.valor == valor) {
-				if (noEncontrado.esquerda.esquerda == null && noEncontrado.esquerda.direita == null) {
-					noEncontrado.esquerda = null;
-					return true;
-				}
-			}
+			pai = buscarNoPai(raiz, valor);
 		} catch (Exception e) {
-			e.printStackTrace();
+			raiz.valor = remover(noMaisDireita(raiz.esquerda));
+			return valor;
 		}
 
-		return false;
+		if (pai == null)
+			return null;
+
+		if (pai.esquerda != null && pai.esquerda.valor == valor) {
+			if (pai.esquerda.esquerda == null)
+				pai.esquerda = pai.esquerda.direita;
+			else if (pai.esquerda.direita == null)
+				pai.esquerda = pai.esquerda.esquerda;
+			else
+				pai.esquerda.valor = remover(noMaisDireita(pai.esquerda.esquerda));
+		} else if (pai.direita.esquerda == null)
+			pai.direita = pai.direita.direita;
+		else if (pai.direita.direita == null)
+			pai.direita = pai.direita.esquerda;
+		else
+			pai.direita.valor = remover(noMaisDireita(pai.direita.esquerda));
+
+		return valor;
 	}
 
-	public boolean remover(int valor) {
-		return remover(raiz, valor);
+	private int atualizarNumeroNos(No no) {
+		if (no == null)
+			return 0;
+
+		no.tamanhoArvoreEsquerda = atualizarNumeroNos(no.esquerda);
+		no.tamanhoArvoreDireita = atualizarNumeroNos(no.direita);
+		return no.tamanhoArvoreEsquerda + no.tamanhoArvoreDireita + 1;
 	}
 
-	private int popFolhaMaisDireita(No no) {
+	public Integer remover(int valor) {
+		Integer resultado = removerSemAtualizar(valor);
+		atualizarNumeroNos(raiz);
+		return resultado;
+	}
+
+	private int noMaisDireita(No no) {
 		No noAtual = no;
-		while (noAtual.direita != null && noAtual.direita.direita != null) {
+		while (noAtual.direita != null) {
 			noAtual = noAtual.direita;
 		}
 
-		int valor = noAtual.direita.valor;
-		noAtual.direita = null;
-
-		return valor;
+		return noAtual.valor;
 	}
 
 	/*
 	 * log(n)
 	 */
 	private Integer enesimoElemento(No no, int n) {
-		if (no == null) {
+		if (no == null)
 			return null;
-		}
 
-		if (n == no.tamanhoArvoreEsquerda + 1)
+		if (n == (no.tamanhoArvoreEsquerda + 1))
 			return no.valor;
 
-		if (n < no.tamanhoArvoreEsquerda + 1)
+		if (n < (no.tamanhoArvoreEsquerda + 1))
 			return enesimoElemento(no.esquerda, n);
 
 		return enesimoElemento(no.direita, n - no.tamanhoArvoreEsquerda - 1);
@@ -203,7 +219,8 @@ public class ArvoreBuscaBinaria {
 		if (x > no.valor)
 			return media(no.direita, x);
 
-		return soma(no) / (no.tamanhoArvoreDireita + no.tamanhoArvoreEsquerda + 1);
+		System.out.println("esq: " + no.tamanhoArvoreEsquerda + "\ndir: " + no.tamanhoArvoreDireita);
+		return soma(no) / (no.tamanhoArvoreEsquerda + no.tamanhoArvoreDireita + 1);
 	}
 
 	public double media(int x) {
@@ -301,27 +318,30 @@ public class ArvoreBuscaBinaria {
 	public void imprimeArvore(int s) {
 		if (s == 1 || s == 2) {
 			if (s == 1)
-				formato1(raiz);
+				System.out.println(formato1(raiz));
 			else if (s == 2)
 				System.out.println(formato2(raiz));
 		}
 	}
 
-	public void formato1(No no) {
+	public String formato1(No no) {
+		String retorno = "";
 		int nivel = getNivel(no, raiz);
 		for (int i = 0; i < nivel - 1; i++)
-			System.out.print("\t");
+			retorno += "\t";
 
-		System.out.print(no.valor);
+		retorno += no.valor;
 		for (int i = 0; i < maxNivel(raiz) - nivel + 1; i++)
-			System.out.print("--------");
+			retorno += "--------";
 
-		System.out.println();
+		retorno += "\n";
 		if (no.esquerda != null)
-			formato1(no.esquerda);
+			retorno += formato1(no.esquerda);
 
 		if (no.direita != null)
-			formato1(no.direita);
+			retorno += formato1(no.direita);
+
+		return retorno;
 	}
 
 	public String formato2(No no) {
@@ -344,11 +364,6 @@ public class ArvoreBuscaBinaria {
 			return;
 		}
 
-		try {
-			Leitura.interpretarComandos(arvore, args[1]);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		Leitura.interpretarComandos(arvore, args[1]);
 	}
-
 }

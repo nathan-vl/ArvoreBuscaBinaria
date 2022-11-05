@@ -34,14 +34,14 @@ public class Leitura {
 		return b ? "SIM" : "NAO";
 	}
 
-	public static void interpretarComandos(ArvoreBuscaBinaria arvoreBuscaBinaria, String caminhoArquivo)
-			throws Exception {
+	public static void interpretarComandos(ArvoreBuscaBinaria arvoreBuscaBinaria, String caminhoArquivo) {
 		List<String> linhas = null;
 
 		try {
 			linhas = Files.readAllLines(Paths.get(caminhoArquivo), StandardCharsets.UTF_8);
 		} catch (IOException e) {
-			throw new Exception("Erro ao ler arquivo de instruções");
+			System.out.println("Erro ao ler arquivo de instruções");
+			return;
 		}
 
 		for (String linha : linhas) {
@@ -49,17 +49,23 @@ public class Leitura {
 				System.out.println(arvoreBuscaBinaria.enesimoElemento(
 						obterSegundoValorStringSeparadaEspaco(linha)));
 			} else if (linha.startsWith("POSICAO")) {
-				System.out.println(arvoreBuscaBinaria.posicao(
-						obterSegundoValorStringSeparadaEspaco(linha)));
+				try {
+					int valor = arvoreBuscaBinaria.posicao(
+							obterSegundoValorStringSeparadaEspaco(linha));
+					System.out.println(valor);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+
 			} else if (linha.startsWith("IMPRIMA")) {
 				arvoreBuscaBinaria.imprimeArvore(
 						obterSegundoValorStringSeparadaEspaco(linha));
 			} else if (linha.startsWith("REMOVA")) {
 				Integer n = obterSegundoValorStringSeparadaEspaco(linha);
-				if (arvoreBuscaBinaria.remover(n)) {
-					System.out.println(n + " removido");
-				} else {
+				if (arvoreBuscaBinaria.remover(n) == null) {
 					System.out.println(n + " não está na árvore, não pode ser removido");
+				} else {
+					System.out.println(n + " removido");
 				}
 			} else if (linha.startsWith("MEDIANA")) {
 				System.out.println(arvoreBuscaBinaria.mediana());
