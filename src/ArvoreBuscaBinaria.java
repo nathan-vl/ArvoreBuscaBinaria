@@ -5,14 +5,6 @@ public class ArvoreBuscaBinaria {
 		this.raiz = new No(raiz);
 	}
 
-	/**
-	 * Função privada utilizada para fazer a busca do valor passado
-	 *
-	 * @param no    nó da arvore onde o valor deverá ser buscado
-	 * @param valor valor a ser consultado
-	 * @return retorna null quando o nó é vazio; e
-	 *         retorna o nó quando encontra o valor procurado.
-	 */
 	private No buscar(No no, int valor) {
 		if (no == null)
 			return null;
@@ -30,40 +22,32 @@ public class ArvoreBuscaBinaria {
 		return buscar(raiz, valor);
 	}
 
-	/**
-	 * Função privada utilizada para inserir o valor passado no nó
-	 *
-	 * @param no    nó da arvore onde o valor deverá ser inserido
-	 * @param valor valor a ser inserido
-	 * @return retorna true quando o valor é inserido; e
-	 *         retorna false quando nenhuma das condições é atendida.
-	 */
-	private boolean inserir(No no, int valor) {
+	private boolean inserirSemAtualizar(No no, int valor) {
 		if (valor < no.valor) {
-			no.tamanhoArvoreEsquerda += 1;
 			if (no.esquerda == null) {
 				no.esquerda = new No(valor);
 				return true;
 			}
 
-			return inserir(no.esquerda, valor);
+			return inserirSemAtualizar(no.esquerda, valor);
 		}
 
 		if (valor > no.valor) {
-			no.tamanhoArvoreDireita += 1;
 			if (no.direita == null) {
 				no.direita = new No(valor);
 				return true;
 			}
 
-			return inserir(no.direita, valor);
+			return inserirSemAtualizar(no.direita, valor);
 		}
 
 		return false;
 	}
 
 	public boolean inserir(int valor) {
-		return inserir(raiz, valor);
+		boolean resultado = inserirSemAtualizar(raiz, valor);
+		atualizarNumeroNos(raiz);
+		return resultado;
 	}
 
 	private No buscarNoPai(No no, int valor) throws Exception {
@@ -93,14 +77,6 @@ public class ArvoreBuscaBinaria {
 		throw new Exception("O nó passado já possui o valor");
 	}
 
-	/**
-	 * Função privada utilizada para remover o valor passado do nó
-	 *
-	 * @param no    nó da arvore onde o valor deverá ser removido
-	 * @param valor valor a ser removido
-	 * @return retorna true quando a remoção ocorre com sucesso; e
-	 *         retorna false quando o nó é vazio, ou seja, null.
-	 */
 	private Integer removerSemAtualizar(int valor) {
 		No pai = null;
 		try {
@@ -154,9 +130,6 @@ public class ArvoreBuscaBinaria {
 		return noAtual.valor;
 	}
 
-	/*
-	 * log(n)
-	 */
 	private Integer enesimoElemento(No no, int n) {
 		if (no == null)
 			return null;
@@ -191,9 +164,6 @@ public class ArvoreBuscaBinaria {
 		return posicao(raiz, x);
 	}
 
-	/*
-	 * log(n)
-	 */
 	public int mediana() {
 		int tamanhoArvore = raiz.tamanhoArvoreEsquerda + raiz.tamanhoArvoreDireita + 1;
 
@@ -219,7 +189,6 @@ public class ArvoreBuscaBinaria {
 		if (x > no.valor)
 			return media(no.direita, x);
 
-		System.out.println("esq: " + no.tamanhoArvoreEsquerda + "\ndir: " + no.tamanhoArvoreDireita);
 		return soma(no) / (no.tamanhoArvoreEsquerda + no.tamanhoArvoreDireita + 1);
 	}
 
@@ -243,7 +212,6 @@ public class ArvoreBuscaBinaria {
 		return true;
 	}
 
-	// eh cheia quando os seus nós possuem 0 ou 2 filhos
 	public boolean ehCheia() {
 		return ehCheia(raiz);
 	}

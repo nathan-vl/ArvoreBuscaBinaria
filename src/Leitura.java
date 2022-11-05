@@ -30,10 +30,6 @@ public class Leitura {
 		return Integer.parseInt(string.split(" ", 0)[1]);
 	}
 
-	private static String booleanToString(boolean b) {
-		return b ? "SIM" : "NAO";
-	}
-
 	public static void interpretarComandos(ArvoreBuscaBinaria arvoreBuscaBinaria, String caminhoArquivo) {
 		List<String> linhas = null;
 
@@ -73,9 +69,17 @@ public class Leitura {
 				System.out.println(arvoreBuscaBinaria.media(
 						obterSegundoValorStringSeparadaEspaco(linha)));
 			} else if (linha.startsWith("CHEIA")) {
-				System.out.println(booleanToString(arvoreBuscaBinaria.ehCheia()));
+				if (arvoreBuscaBinaria.ehCheia()) {
+					System.out.println("A árvore é cheia");
+				} else {
+					System.out.println("A árvore não é cheia");
+				}
 			} else if (linha.startsWith("COMPLETA")) {
-				System.out.println(booleanToString(arvoreBuscaBinaria.ehCompleta()));
+				if (arvoreBuscaBinaria.ehCheia()) {
+					System.out.println("A árvore é completa");
+				} else {
+					System.out.println("A árvore não é completa");
+				}
 			} else if (linha.startsWith("PREORDEM")) {
 				System.out.println(arvoreBuscaBinaria.pre_ordem());
 			} else if (linha.startsWith("INSIRA")) {

@@ -3,8 +3,8 @@ public class No {
 
 	int altura;
 
-	int tamanhoArvoreEsquerda = 0;
-	int tamanhoArvoreDireita = 0;
+	int tamanhoArvoreEsquerda;
+	int tamanhoArvoreDireita;
 
 	No esquerda;
 	No direita;
