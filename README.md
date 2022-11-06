@@ -2,7 +2,13 @@
 
 ## Instruções
 
-É necessário ter `make` instalado. Após clonar o projeto, é possível compilar usando o comando
+É necessário ter `java` e `make` instalado.
+
+Para instalar o Java: `sudo apt install openjdk-18-jdk`
+
+Para instalar o make: `sudo apt install make`
+
+Após clonar o projeto, é possível compilar usando o comando
 
 ```shell
 cd src && make
@@ -16,5 +22,5 @@ java -jar ArvoreBuscaBinaria.jar <arquivo_valores> <arquivo_instrucoes>
 
 Onde `arquivo_valores` é o caminho para o arquivo contendo os valores a serem inseridos inicialmente na árvore e `arquivo_instrucoes` é o caminho para o arquivo contendo as instruções.
 
-O projeto possui alguns arquivos de teste em um de seus diretório ( `/src/data` ). Sendo necessário você informar na hora da execução qual arquivo deseja testar, por exemplo, a partir da pasta src
+O projeto possui alguns arquivos de teste em um de seus diretório (`/src/data`). Sendo necessário você informar na hora da execução qual arquivo deseja testar, por exemplo, a partir da pasta src
 
