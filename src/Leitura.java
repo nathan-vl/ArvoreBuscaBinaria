@@ -13,10 +13,10 @@ public class Leitura {
 			throw new Exception("Erro ao ler arquivo de valores");
 		}
 
-		String[] parsedValues = values.split(" ", 0);
+		if (values == "")
+			throw new Exception("Arquivo de valores vazio");
 
-		if (parsedValues.length == 0)
-			throw new Exception("Arquivo sem números");
+		String[] parsedValues = values.split(" ", 0);
 
 		ArvoreBuscaBinaria arvoreBuscaBinaria = new ArvoreBuscaBinaria(Integer.parseInt(parsedValues[0]));
 
@@ -30,7 +30,8 @@ public class Leitura {
 		return Integer.parseInt(string.split(" ", 0)[1]);
 	}
 
-	public static void interpretarComandos(ArvoreBuscaBinaria arvoreBuscaBinaria, String caminhoArquivo) {
+	public static void interpretarComandos(ArvoreBuscaBinaria arvoreBuscaBinaria, String caminhoArquivo)
+			throws Exception {
 		List<String> linhas = null;
 
 		try {
@@ -39,6 +40,9 @@ public class Leitura {
 			System.out.println("Erro ao ler arquivo de instruções");
 			return;
 		}
+
+		if (linhas.size() == 0)
+			throw new Exception("Arquivo de instruções vazio");
 
 		for (String linha : linhas) {
 			if (linha.startsWith("ENESIMO")) {

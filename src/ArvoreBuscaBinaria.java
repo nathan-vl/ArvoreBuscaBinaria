@@ -324,14 +324,12 @@ public class ArvoreBuscaBinaria {
 	}
 
 	public static void main(String[] args) {
-		ArvoreBuscaBinaria arvore = null;
 		try {
-			arvore = Leitura.lerValores(args[0]);
+			ArvoreBuscaBinaria arvore = Leitura.lerValores(args[0]);
+			Leitura.interpretarComandos(arvore, args[1]);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return;
 		}
-
-		Leitura.interpretarComandos(arvore, args[1]);
 	}
 }
